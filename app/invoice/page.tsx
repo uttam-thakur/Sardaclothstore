@@ -80,8 +80,9 @@ const handleNewBill = () => {
       nextNumber
     ).padStart(6, "0");
 
-    setInvoiceNo(formattedNumber);
-  }, []);
+setInvoiceNo(
+  `SAR/26-27/${formattedNumber}`
+);  }, []);
 
   // Add Item
   const addItem = () => {
@@ -569,251 +570,580 @@ border-bottom:0.8px solid #444;            padding:5px 0;
 };
 
   return (
-    <main className="min-h-screen bg-gray-100 p-6">
+//     <main className="min-h-screen bg-gray-100 p-6">
 
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+//       {/* Header */}
+//       <div className="flex justify-between items-center mb-8">
 
-        <h1 className="text-3xl font-bold">
-          Thermal Invoice
-        </h1>
+//         <h1 className="text-3xl font-bold">
+//           Thermal Invoice
+//         </h1>
 
-        <Link href="/all-invoice">
-          <button className="bg-black text-white px-5 py-3 rounded-xl">
-            All Bills
-          </button>
-        </Link>
-        <button
-  onClick={handleNewBill}
-  className="bg-black text-white px-5 py-3 rounded-xl"
->
-  New Bill
-</button>
+//         <Link href="/all-invoice">
+//           <button className="bg-black text-white px-5 py-3 rounded-xl">
+//             All Bills
+//           </button>
+//         </Link>
+//         <button
+//   onClick={handleNewBill}
+//   className="bg-black text-white px-5 py-3 rounded-xl"
+// >
+//   New Bill
+// </button>
 
-      </div>
+//       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
+//       <div className="grid lg:grid-cols-2 gap-8">
 
-        {/* Left Side */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg">
+//         {/* Left Side */}
+//         <div className="bg-white p-6 rounded-2xl shadow-lg">
 
-          {/* Customer */}
-          <h2 className="text-2xl font-bold mb-6">
-            Customer Details
-          </h2>
+//           {/* Customer */}
+//           <h2 className="text-2xl font-bold mb-6">
+//             Customer Details
+//           </h2>
 
-          <div className="space-y-4">
+//           <div className="space-y-4">
 
-            <input
-              type="text"
-              placeholder="Customer Name"
-              value={customerName}
-              onChange={(e) =>
-                setCustomerName(
-                  e.target.value
-                )
-              }
-              className="w-full border px-4 py-3 rounded-xl"
-            />
+//             <input
+//               type="text"
+//               placeholder="Customer Name"
+//               value={customerName}
+//               onChange={(e) =>
+//                 setCustomerName(
+//                   e.target.value
+//                 )
+//               }
+//               className="w-full border px-4 py-3 rounded-xl"
+//             />
 
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              value={mobileNo}
-              onChange={(e) =>
-                setMobileNo(
-                  e.target.value
-                )
-              }
-              className="w-full border px-4 py-3 rounded-xl"
-            />
+//             <input
+//               type="text"
+//               placeholder="Mobile Number"
+//               value={mobileNo}
+//               onChange={(e) =>
+//                 setMobileNo(
+//                   e.target.value
+//                 )
+//               }
+//               className="w-full border px-4 py-3 rounded-xl"
+//             />
 
-            <input
-              type="text"
-              placeholder="GST Number"
-              value={gstNo}
-              onChange={(e) =>
-                setGstNo(
-                  e.target.value
-                )
-              }
-              className="w-full border px-4 py-3 rounded-xl"
-            />
+//             <input
+//               type="text"
+//               placeholder="GST Number"
+//               value={gstNo}
+//               onChange={(e) =>
+//                 setGstNo(
+//                   e.target.value
+//                 )
+//               }
+//               className="w-full border px-4 py-3 rounded-xl"
+//             />
 
-          </div>
+//           </div>
 
-          {/* Items */}
-          <h2 className="text-2xl font-bold mt-10 mb-6">
-            Add Items
-          </h2>
+//           {/* Items */}
+//           <h2 className="text-2xl font-bold mt-10 mb-6">
+//             Add Items
+//           </h2>
 
-          <div className="grid grid-cols-4 gap-3 mb-3 font-semibold">
+//           <div className="grid grid-cols-4 gap-3 mb-3 font-semibold">
 
-            <div>Item</div>
+//             <div>Item</div>
 
-            <div>Qty</div>
+//             <div>Qty</div>
 
-            <div>Price</div>
+//             <div>Price</div>
 
-            <div></div>
+//             <div></div>
 
-          </div>
+//           </div>
 
-          <div className="grid grid-cols-4 gap-3">
+//           <div className="grid grid-cols-4 gap-3">
 
-            <input
-              type="text"
-              placeholder="Item"
-              value={
-                currentItem.itemName
-              }
-              onChange={(e) =>
-                setCurrentItem({
-                  ...currentItem,
-                  itemName:
-                    e.target.value,
-                })
-              }
-              className="border px-4 py-3 rounded-xl"
-            />
+//             <input
+//               type="text"
+//               placeholder="Item"
+//               value={
+//                 currentItem.itemName
+//               }
+//               onChange={(e) =>
+//                 setCurrentItem({
+//                   ...currentItem,
+//                   itemName:
+//                     e.target.value,
+//                 })
+//               }
+//               className="border px-4 py-3 rounded-xl"
+//             />
 
-          <input
-  type="number"
-  placeholder="Qty"
-  value={currentItem.qty}
-  // onFocus={(e) => {
-  //   if (currentItem.qty === 0) {
-  //     setCurrentItem({
-  //       ...currentItem,
-  //       qty: "",
-  //     });
-  //   }
-  // }}
-  onChange={(e) =>
-    setCurrentItem({
-      ...currentItem,
-      qty: Number(e.target.value),
-    })
-  }
-  className="border px-4 py-3 rounded-xl"
-/>
+//           <input
+//   type="number"
+//   placeholder="Qty"
+//   value={currentItem.qty}
+  
+//   onChange={(e) =>
+//     setCurrentItem({
+//       ...currentItem,
+//       qty: Number(e.target.value),
+//     })
+//   }
+//   className="border px-4 py-3 rounded-xl"
+// />
 
-<input
-  type="number"
-  placeholder="Price"
-  value={currentItem.price}
-  // onFocus={(e) => {
-  //   if (currentItem.price === 0) {
-  //     setCurrentItem({
-  //       ...currentItem,
-  //       price: "",
-  //     });
-  //   }
-  // }}
-  onChange={(e) =>
-    setCurrentItem({
-      ...currentItem,
-      price: Number(e.target.value),
-    })
-  }
-  className="border px-4 py-3 rounded-xl"
-/>
+// <input
+//   type="number"
+//   placeholder="Price"
+//   value={currentItem.price}
+  
+//   onChange={(e) =>
+//     setCurrentItem({
+//       ...currentItem,
+//       price: Number(e.target.value),
+//     })
+//   }
+//   className="border px-4 py-3 rounded-xl"
+// />
 
-            <button
-              onClick={addItem}
-              className="bg-green-600 text-white rounded-xl"
-            >
-              {editIndex !== null
-                ? "Update"
-                : "Add"}
-            </button>
+//             <button
+//               onClick={addItem}
+//               className="bg-green-600 text-white rounded-xl"
+//             >
+//               {editIndex !== null
+//                 ? "Update"
+//                 : "Add"}
+//             </button>
 
-          </div>
+//           </div>
 
-          {/* Added Items */}
-          {items.length > 0 && (
+//           {/* Added Items */}
+//           {items.length > 0 && (
 
-            <div className="mt-6 space-y-3">
+//             <div className="mt-6 space-y-3">
 
-              {items.map(
-                (item, index) => (
+//               {items.map(
+//                 (item, index) => (
 
-                  <div
-                    key={index}
-                    className="grid grid-cols-6 gap-3 bg-gray-100 p-3 rounded-xl items-center"
-                  >
+//                   <div
+//                     key={index}
+//                     className="grid grid-cols-6 gap-3 bg-gray-100 p-3 rounded-xl items-center"
+//                   >
 
-                    <div className="col-span-2 font-medium text-sm">
-                      {item.itemName}
-                    </div>
+//                     <div className="col-span-2 font-medium text-sm">
+//                       {item.itemName}
+//                     </div>
 
-                    <div className="text-sm">
-                      Qty: {item.qty}
-                    </div>
+//                     <div className="text-sm">
+//                       Qty: {item.qty}
+//                     </div>
 
-                    <div className="text-sm">
-                      ₹ {item.price}
-                    </div>
+//                     <div className="text-sm">
+//                       ₹ {item.price}
+//                     </div>
 
-                    <button
-                      onClick={() =>
-                        editItem(index)
-                      }
-                      className="bg-blue-500 text-white py-2 rounded-lg text-sm"
-                    >
-                      Edit
-                    </button>
+//                     <button
+//                       onClick={() =>
+//                         editItem(index)
+//                       }
+//                       className="bg-blue-500 text-white py-2 rounded-lg text-sm"
+//                     >
+//                       Edit
+//                     </button>
 
-                    <button
-                      onClick={() =>
-                        removeItem(index)
-                      }
-                      className="bg-red-500 text-white py-2 rounded-lg text-sm"
-                    >
-                      Remove
-                    </button>
+//                     <button
+//                       onClick={() =>
+//                         removeItem(index)
+//                       }
+//                       className="bg-red-500 text-white py-2 rounded-lg text-sm"
+//                     >
+//                       Remove
+//                     </button>
 
-                  </div>
+//                   </div>
 
-                )
-              )}
+//                 )
+//               )}
 
-            </div>
+//             </div>
 
-          )}
+//           )}
 
-          {/* Discount */}
-          <div className="mt-8">
+//           {/* Discount */}
+//           <div className="mt-8">
 
-            <input
-              type="number"
-              placeholder="Discount"
-              value={discount}
-              onChange={(e) =>
-                setDiscount(
-                  Number(
-                    e.target.value
-                  )
-                )
-              }
-              className="w-full border px-4 py-3 rounded-xl"
-            />
+//             <input
+//               type="number"
+//               placeholder="Discount"
+//               value={discount}
+//               onChange={(e) =>
+//                 setDiscount(
+//                   Number(
+//                     e.target.value
+//                   )
+//                 )
+//               }
+//               className="w-full border px-4 py-3 rounded-xl"
+//             />
 
-          </div>
+//           </div>
 
-          {/* Print */}
-          <button
-            onClick={printInvoice}
-            className="w-full mt-8 bg-black text-white py-4 rounded-2xl text-lg font-bold"
-          >
-            Print Bill
-          </button>
+//           {/* Print */}
+//           <button
+//             onClick={printInvoice}
+//             className="w-full mt-8 bg-black text-white py-4 rounded-2xl text-lg font-bold"
+//           >
+//             Print Bill
+//           </button>
 
        
+
+//         </div>
+
+       <main className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 p-6">
+
+  {/* Header */}
+  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+
+    <div>
+
+      <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
+        Thermal Invoice
+      </h1>
+
+      <p className="text-gray-500 mt-2 text-sm">
+        Manage and generate professional thermal bills
+      </p>
+
+    </div>
+
+    <div className="flex gap-3 flex-wrap">
+
+      <Link href="/all-invoice">
+
+        <button className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-800 px-6 py-3 rounded-2xl font-semibold shadow-sm transition-all duration-200">
+
+          All Bills
+
+        </button>
+
+      </Link>
+
+      <Link href="/dashboard">
+
+        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg transition-all duration-200">
+
+          Dashboard
+
+        </button>
+
+      </Link>
+
+      <button
+        onClick={handleNewBill}
+        className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg transition-all duration-200"
+      >
+
+        New Bill
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div className="grid xl:grid-cols-2 gap-8">
+
+    {/* LEFT PANEL */}
+    <div className="bg-white/90 backdrop-blur-lg border border-gray-200 rounded-3xl shadow-2xl p-8">
+
+      {/* Customer Details */}
+      <div className="mb-10">
+
+        <div className="flex items-center justify-between mb-6">
+
+          <div>
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              Customer Details
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Enter customer billing information
+            </p>
+
+          </div>
 
         </div>
 
-       
+        <div className="grid md:grid-cols-2 gap-5">
+
+          <input
+            type="text"
+            placeholder="Customer Name"
+            value={customerName}
+            onChange={(e) =>
+              setCustomerName(
+                e.target.value
+              )
+            }
+            className="border border-gray-300 focus:border-black focus:ring-4 focus:ring-gray-200 outline-none px-5 py-4 rounded-2xl transition-all bg-gray-50"
+          />
+
+          <input
+            type="text"
+            placeholder="Mobile Number"
+            value={mobileNo}
+            onChange={(e) =>
+              setMobileNo(
+                e.target.value
+              )
+            }
+            className="border border-gray-300 focus:border-black focus:ring-4 focus:ring-gray-200 outline-none px-5 py-4 rounded-2xl transition-all bg-gray-50"
+          />
+
+          <input
+            type="text"
+            placeholder="GST Number"
+            value={gstNo}
+            onChange={(e) =>
+              setGstNo(
+                e.target.value
+              )
+            }
+            className="border border-gray-300 focus:border-black focus:ring-4 focus:ring-gray-200 outline-none px-5 py-4 rounded-2xl transition-all bg-gray-50 md:col-span-2"
+          />
+
+        </div>
+
+      </div>
+
+      {/* Add Items */}
+      <div>
+
+        <div className="flex items-center justify-between mb-6">
+
+          <div>
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              Add Products
+            </h2>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Add invoice items and quantities
+            </p>
+
+          </div>
+
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-4">
+
+          {/* Item */}
+          <input
+            type="text"
+            placeholder="Item Name"
+            value={currentItem.itemName}
+            onChange={(e) =>
+              setCurrentItem({
+                ...currentItem,
+                itemName:
+                  e.target.value,
+              })
+            }
+            className="border border-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none px-5 py-4 rounded-2xl bg-gray-50 md:col-span-2"
+          />
+
+          {/* Qty */}
+          <input
+            type="number"
+            placeholder="Qty"
+            value={
+              currentItem.qty === 0
+                ? ""
+                : currentItem.qty
+            }
+            onFocus={(e) => {
+
+              if (
+                e.target.value === "0"
+              ) {
+
+                e.target.value = "";
+
+              }
+
+            }}
+            onChange={(e) =>
+              setCurrentItem({
+                ...currentItem,
+                qty: Number(
+                  e.target.value
+                ),
+              })
+            }
+            className="border border-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none px-5 py-4 rounded-2xl bg-gray-50"
+          />
+
+          {/* Price */}
+          <input
+            type="number"
+            placeholder="Price"
+            value={
+              currentItem.price === 0
+                ? ""
+                : currentItem.price
+            }
+            onFocus={(e) => {
+
+              if (
+                e.target.value === "0"
+              ) {
+
+                e.target.value = "";
+
+              }
+
+            }}
+            onChange={(e) =>
+              setCurrentItem({
+                ...currentItem,
+                price: Number(
+                  e.target.value
+                ),
+              })
+            }
+            className="border border-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none px-5 py-4 rounded-2xl bg-gray-50"
+          />
+
+        </div>
+
+        {/* Add Button */}
+        <button
+          onClick={addItem}
+          className="w-full mt-5 bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[1.01] hover:shadow-xl transition-all text-white py-4 rounded-2xl font-bold text-lg"
+        >
+
+          {editIndex !== null
+            ? "Update Item"
+            : "Add Item"}
+
+        </button>
+
+      </div>
+
+      {/* Added Items */}
+      {items.length > 0 && (
+
+        <div className="mt-8 space-y-4">
+
+          <h3 className="text-xl font-bold text-gray-800">
+            Added Products
+          </h3>
+
+          {items.map(
+            (item, index) => (
+
+              <div
+                key={index}
+                className="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm"
+              >
+
+                <div>
+
+                  <h4 className="font-bold text-lg text-gray-800">
+                    {item.itemName}
+                  </h4>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                    Qty: {item.qty} × ₹ {item.price}
+                  </p>
+
+                </div>
+
+                <div className="flex items-center gap-3">
+
+                  <div className="font-bold text-xl text-indigo-600">
+
+                    ₹{" "}
+                    {(
+                      item.qty *
+                      item.price
+                    ).toFixed(2)}
+
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      editItem(index)
+                    }
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      removeItem(index)
+                    }
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-semibold"
+                  >
+                    Remove
+                  </button>
+
+                </div>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
+      )}
+
+      {/* Discount */}
+      <div className="mt-8">
+
+        <label className="block text-sm font-semibold text-gray-600 mb-2">
+          Discount Amount
+        </label>
+
+        <input
+          type="number"
+          placeholder="Enter Discount"
+          value={
+            discount === 0
+              ? ""
+              : discount
+          }
+          onChange={(e) =>
+            setDiscount(
+              Number(
+                e.target.value
+              )
+            )
+          }
+          className="w-full border border-gray-300 focus:border-black focus:ring-4 focus:ring-gray-200 outline-none px-5 py-4 rounded-2xl bg-gray-50"
+        />
+
+      </div>
+
+      {/* Print Button */}
+      <div className="sticky bottom-4 mt-10">
+
+        <button
+          onClick={printInvoice}
+          className="w-full bg-gradient-to-r from-black to-gray-800 hover:shadow-2xl hover:scale-[1.01] transition-all text-white py-5 rounded-3xl text-xl font-bold tracking-wide"
+        >
+
+          Print Thermal Bill
+
+        </button>
+
+      </div>
+
+    </div>
        {/* Right Side Bill */}
 <div className="bg-white p-6 rounded-2xl shadow-lg flex justify-center">
 

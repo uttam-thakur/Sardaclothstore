@@ -43,6 +43,9 @@ const [searchMonth, setSearchMonth] =
   useState("");
 const [editingInvoice, setEditingInvoice] =
   useState<any>(null);
+
+  const [loading, setLoading] =
+  useState(true);
   // Load Invoices
   // useEffect(() => {
   //   const savedInvoices = JSON.parse(
@@ -57,31 +60,93 @@ const [editingInvoice, setEditingInvoice] =
 const GOOGLE_SHEET_API =
   "https://script.google.com/macros/s/AKfycbwkvmnoVjLwF4XUvMWNuHSKtBYXNWejW0UfrA22AbdvaUYtgM46SKbTE2Gkp6fnaBEo/exec";
 
-  useEffect(() => {
+useEffect(() => {
+
   const fetchInvoices = async () => {
+
     try {
-      const res = await fetch(GOOGLE_SHEET_API);
+
+      setLoading(true);
+
+      const res = await fetch(
+        GOOGLE_SHEET_API
+      );
 
       const text = await res.text();
 
-      console.log("RAW RESPONSE:", text);
+      console.log(
+        "RAW RESPONSE:",
+        text
+      );
 
-      if (!text || text.trim() === "") {
-        throw new Error("Empty response from server");
+      if (
+        !text ||
+        text.trim() === ""
+      ) {
+
+        setInvoices([]);
+        return;
+
       }
 
-      const data = JSON.parse(text);
+      const data =
+        JSON.parse(text);
 
-      console.log("PARSED DATA:", data);
+      console.log(
+        "PARSED DATA:",
+        data
+      );
 
-      setInvoices(data.reverse());
+      setInvoices(
+        data.reverse()
+      );
+
     } catch (error) {
-      console.log("Fetch Error:", error);
+
+      console.log(
+        "Fetch Error:",
+        error
+      );
+
+      setInvoices([]);
+
+    } finally {
+
+      setLoading(false);
+
     }
+
   };
 
   fetchInvoices();
+
 }, []);
+
+//   useEffect(() => {
+//   const fetchInvoices = async () => {
+//     try {
+//       const res = await fetch(GOOGLE_SHEET_API);
+
+//       const text = await res.text();
+
+//       console.log("RAW RESPONSE:", text);
+
+//       if (!text || text.trim() === "") {
+//         throw new Error("Empty response from server");
+//       }
+
+//       const data = JSON.parse(text);
+
+//       console.log("PARSED DATA:", data);
+
+//       setInvoices(data.reverse());
+//     } catch (error) {
+//       console.log("Fetch Error:", error);
+//     }
+//   };
+
+//   fetchInvoices();
+// }, []);
   // Thermal Print
   // Print Invoice
 const printInvoice = (
@@ -976,7 +1041,7 @@ const startEdit = (
 
 )}
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      {/* <div className="flex justify-between items-center mb-8">
 
         <h1 className="text-3xl font-bold">
           All Thermal Bills
@@ -998,7 +1063,7 @@ const startEdit = (
 
   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-    {/* Bill No */}
+    
     <input
       type="text"
       placeholder="Search Bill No"
@@ -1011,7 +1076,7 @@ const startEdit = (
       className="border px-4 py-3 rounded-xl"
     />
 
-    {/* Customer */}
+    
     <input
       type="text"
       placeholder="Customer Name"
@@ -1024,7 +1089,7 @@ const startEdit = (
       className="border px-4 py-3 rounded-xl"
     />
 
-    {/* Date */}
+    
     <input
       type="text"
       placeholder="dd-mm-yyyy"
@@ -1037,8 +1102,7 @@ const startEdit = (
       className="border px-4 py-3 rounded-xl"
     />
 
-    {/* Month */}
-    <input
+        <input
       type="month"
       value={searchMonth}
       onChange={(e) =>
@@ -1051,18 +1115,272 @@ const startEdit = (
 
   </div>
 
+</div> */}
+
+
+
+{/* Header */}
+<div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 mb-8">
+
+  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+
+    {/* Left */}
+    <div>
+
+      <h1 className="text-4xl font-extrabold text-gray-800 tracking-tight">
+        All Thermal Bills
+      </h1>
+
+      <p className="text-gray-500 mt-2 text-sm">
+        Manage, filter, print and download invoices easily
+      </p>
+
+    </div>
+
+    {/* Right Buttons */}
+    <div className="flex flex-wrap gap-3">
+
+      <Link href="/invoice">
+        <button className="bg-gradient-to-r from-black to-gray-800 hover:scale-105 transition-all duration-300 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg">
+          + Create Invoice
+        </button>
+      </Link>
+
+      <Link href="/dashboard">
+        <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:scale-105 transition-all duration-300 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg">
+          Dashboard
+        </button>
+      </Link>
+
+    </div>
+
+  </div>
+
 </div>
 
-      {/* Empty */}
-      {invoices.length === 0 && (
+{/* Filter Section */}
+<div className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 mb-10">
 
-        <div className="bg-white p-10 rounded-xl text-center shadow-lg">
+  {/* Top */}
+  <div className="flex items-center justify-between mb-6">
 
-          No Bills Found
+    <div>
 
-        </div>
+      <h2 className="text-2xl font-bold text-gray-800">
+        Filter Bills
+      </h2>
 
-      )}
+      <p className="text-gray-500 text-sm mt-1">
+        Search invoices quickly using filters
+      </p>
+
+    </div>
+
+    {/* Reset Filters */}
+    <button
+      onClick={() => {
+        setSearchBillNo("");
+        setSearchCustomer("");
+        setSearchDate("");
+        setSearchMonth("");
+      }}
+      className="bg-red-50 hover:bg-red-100 text-red-600 font-semibold px-5 py-2 rounded-xl transition-all duration-300"
+    >
+      Reset
+    </button>
+
+  </div>
+
+  {/* Filters */}
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+    {/* Bill No */}
+    <div className="space-y-2">
+
+      <label className="text-sm font-semibold text-gray-700">
+        Bill Number
+      </label>
+
+      <div className="relative">
+
+        <input
+          type="text"
+          placeholder="Search bill no..."
+          value={searchBillNo}
+          onChange={(e) =>
+            setSearchBillNo(e.target.value)
+          }
+          className="w-full border border-gray-300 focus:border-black focus:ring-4 focus:ring-gray-200 outline-none px-4 py-3 rounded-2xl bg-gray-50 transition-all"
+        />
+
+      </div>
+
+    </div>
+
+    {/* Customer */}
+    <div className="space-y-2">
+
+      <label className="text-sm font-semibold text-gray-700">
+        Customer Name
+      </label>
+
+      <input
+        type="text"
+        placeholder="Search customer..."
+        value={searchCustomer}
+        onChange={(e) =>
+          setSearchCustomer(e.target.value)
+        }
+        className="w-full border border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none px-4 py-3 rounded-2xl bg-gray-50 transition-all"
+      />
+
+    </div>
+
+    {/* Date */}
+    <div className="space-y-2">
+
+      <label className="text-sm font-semibold text-gray-700">
+        Invoice Date
+      </label>
+
+      <input
+        type="text"
+        placeholder="dd-mm-yyyy"
+        value={searchDate}
+        onChange={(e) =>
+          setSearchDate(e.target.value)
+        }
+        className="w-full border border-gray-300 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none px-4 py-3 rounded-2xl bg-gray-50 transition-all"
+      />
+
+    </div>
+
+    {/* Month */}
+    <div className="space-y-2">
+
+      <label className="text-sm font-semibold text-gray-700">
+        Month Wise
+      </label>
+
+      <input
+        type="month"
+        value={searchMonth}
+        onChange={(e) =>
+          setSearchMonth(e.target.value)
+        }
+        className="w-full border border-gray-300 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 outline-none px-4 py-3 rounded-2xl bg-gray-50 transition-all"
+      />
+
+    </div>
+
+  </div>
+
+  {/* Bottom Stats */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-2xl p-5 border border-blue-200">
+
+      <p className="text-sm text-blue-700 font-semibold">
+        Total Bills
+      </p>
+
+      <h3 className="text-3xl font-bold text-blue-900 mt-2">
+        {filteredInvoices.length}
+      </h3>
+
+    </div>
+
+    <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-2xl p-5 border border-green-200">
+
+      <p className="text-sm text-green-700 font-semibold">
+        Total Sales
+      </p>
+
+      <h3 className="text-3xl font-bold text-green-900 mt-2">
+
+        ₹{" "}
+        {filteredInvoices
+          .reduce(
+            (acc, curr) =>
+              acc + curr.finalTotal,
+            0
+          )
+          .toFixed(2)}
+
+      </h3>
+
+    </div>
+
+    <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-2xl p-5 border border-purple-200">
+
+      <p className="text-sm text-purple-700 font-semibold">
+        Customers
+      </p>
+
+      <h3 className="text-3xl font-bold text-purple-900 mt-2">
+
+        {
+          new Set(
+            filteredInvoices.map(
+              (i) => i.customerName
+            )
+          ).size
+        }
+
+      </h3>
+
+    </div>
+
+  </div>
+
+</div>
+      
+      {/* Loader */}
+{loading && (
+
+  <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+
+    <div className="flex justify-center">
+
+      <div className="w-14 h-14 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
+
+    </div>
+
+    <p className="mt-5 text-gray-500 text-lg font-medium">
+
+      Loading Bills...
+
+    </p>
+
+  </div>
+
+)}
+
+{/* Empty State */}
+{!loading &&
+  invoices.length === 0 && (
+
+  <div className="bg-white rounded-2xl shadow-lg p-14 text-center">
+
+    <div className="text-6xl mb-5">
+      📄
+    </div>
+
+    <h2 className="text-2xl font-bold text-gray-800">
+
+      No Bills Found
+
+    </h2>
+
+    <p className="text-gray-500 mt-3">
+
+      Your invoices will appear here.
+
+    </p>
+
+  </div>
+
+)}
 
       {/* Bills */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

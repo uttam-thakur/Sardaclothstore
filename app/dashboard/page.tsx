@@ -16,7 +16,8 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect, useMemo, useState } from "react";
 
 import Link from "next/link";
@@ -54,34 +55,69 @@ export default function DashboardPage() {
 
   const [selectedMonth, setSelectedMonth] =
     useState("");
+const [loading, setLoading] =
+  useState(true);
+  // useEffect(() => {
+
+  //   const fetchInvoices = async () => {
+
+  //     try {
+
+  //       const res = await fetch(
+  //         GOOGLE_SHEET_API
+  //       );
+
+  //       const text = await res.text();
+
+  //       const data = JSON.parse(text);
+
+  //       setInvoices(data);
+
+  //     } catch (error) {
+
+  //       console.log(error);
+
+  //     }
+
+  //   };
+
+  //   fetchInvoices();
+
+  // }, []);
 
   useEffect(() => {
 
-    const fetchInvoices = async () => {
+  const fetchInvoices = async () => {
 
-      try {
+    try {
 
-        const res = await fetch(
-          GOOGLE_SHEET_API
-        );
+      setLoading(true);
 
-        const text = await res.text();
+      const res = await fetch(
+        GOOGLE_SHEET_API
+      );
 
-        const data = JSON.parse(text);
+      const text = await res.text();
 
-        setInvoices(data);
+      const data = JSON.parse(text);
 
-      } catch (error) {
+      setInvoices(data);
 
-        console.log(error);
+    } catch (error) {
 
-      }
+      console.log(error);
 
-    };
+    } finally {
 
-    fetchInvoices();
+      setLoading(false);
 
-  }, []);
+    }
+
+  };
+
+  fetchInvoices();
+
+}, []);
 
   // Total Sales
   const totalSales =
@@ -407,7 +443,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Sales Chart */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      {/* <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
 
         <h2 className="text-2xl font-bold mb-6 capitalize">
           {filterType} Sales Chart
@@ -449,10 +485,90 @@ export default function DashboardPage() {
 
         </ResponsiveContainer>
 
-      </div>
+      </div> */}
+
+      {/* Sales Chart */}
+<div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mb-8">
+
+  <div className="flex items-center justify-between mb-6">
+
+    <div>
+
+      <h2 className="text-2xl font-bold text-gray-800 capitalize">
+        {filterType} Sales Analytics
+      </h2>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Visual overview of sales performance
+      </p>
+
+    </div>
+
+  </div>
+
+  {loading ? (
+
+    <div className="space-y-4">
+
+      <Skeleton
+        height={30}
+        borderRadius={10}
+      />
+
+      <Skeleton
+        height={350}
+        borderRadius={20}
+      />
+
+    </div>
+
+  ) : (
+
+    <ResponsiveContainer
+      width="100%"
+      height={400}
+    >
+
+      <BarChart data={chartData}>
+
+        <CartesianGrid strokeDasharray="3 3" />
+
+        <XAxis
+          dataKey={
+            filterType ===
+            "daily"
+              ? "date"
+              : filterType ===
+                "weekly"
+              ? "week"
+              : filterType ===
+                "quarterly"
+              ? "quarter"
+              : "month"
+          }
+        />
+
+        <YAxis />
+
+        <Tooltip />
+
+        <Legend />
+
+        <Bar
+          dataKey="sales"
+          radius={[10, 10, 0, 0]}
+        />
+
+      </BarChart>
+
+    </ResponsiveContainer>
+
+  )}
+
+</div>
 
       {/* Top Selling Items */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      {/* <div className="grid lg:grid-cols-2 gap-8">
 
         <div className="bg-white rounded-2xl shadow-lg p-6">
 
@@ -525,10 +641,127 @@ export default function DashboardPage() {
 
         </div>
 
-      </div>
+      </div> */}
+
+      {/* Top Selling Items */}
+<div className="grid lg:grid-cols-2 gap-8">
+
+  {/* Pie Chart */}
+  <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+
+    <div className="mb-6">
+
+      <h2 className="text-2xl font-bold text-gray-800">
+        Top Selling Items
+      </h2>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Most sold products overview
+      </p>
+
+    </div>
+
+    {loading ? (
+
+      <Skeleton
+        height={350}
+        borderRadius={20}
+      />
+
+    ) : (
+
+      <ResponsiveContainer
+        width="100%"
+        height={350}
+      >
+
+        <PieChart>
+
+          <Pie
+            data={topItems}
+            dataKey="qty"
+            nameKey="item"
+            outerRadius={120}
+            label
+          >
+
+            {topItems.map(
+              (_, index) => (
+                <Cell key={index} />
+              )
+            )}
+
+          </Pie>
+
+          <Tooltip />
+
+        </PieChart>
+
+      </ResponsiveContainer>
+
+    )}
+
+  </div>
+
+  {/* Line Chart */}
+  <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6">
+
+    <div className="mb-6">
+
+      <h2 className="text-2xl font-bold text-gray-800">
+        Item Wise Quantity
+      </h2>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Quantity performance per item
+      </p>
+
+    </div>
+
+    {loading ? (
+
+      <Skeleton
+        height={350}
+        borderRadius={20}
+      />
+
+    ) : (
+
+      <ResponsiveContainer
+        width="100%"
+        height={350}
+      >
+
+        <LineChart data={itemSales}>
+
+          <CartesianGrid strokeDasharray="3 3" />
+
+          <XAxis dataKey="item" />
+
+          <YAxis />
+
+          <Tooltip />
+
+          <Legend />
+
+          <Line
+            type="monotone"
+            dataKey="qty"
+            strokeWidth={3}
+          />
+
+        </LineChart>
+
+      </ResponsiveContainer>
+
+    )}
+
+  </div>
+
+</div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 mt-8 overflow-auto">
+      {/* <div className="bg-white rounded-2xl shadow-lg p-6 mt-8 overflow-auto">
 
         <h2 className="text-2xl font-bold mb-6">
           Top Products Table
@@ -576,7 +809,96 @@ export default function DashboardPage() {
 
         </table>
 
-      </div>
+      </div> */}
+      {/* Table */}
+<div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 mt-8 overflow-auto">
+
+  <div className="flex items-center justify-between mb-6">
+
+    <div>
+
+      <h2 className="text-2xl font-bold text-gray-800">
+        Top Products Table
+      </h2>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Best performing products list
+      </p>
+
+    </div>
+
+  </div>
+
+  {loading ? (
+
+    <div className="space-y-3">
+
+      {[1,2,3,4,5].map((i) => (
+
+        <Skeleton
+          key={i}
+          height={50}
+          borderRadius={12}
+        />
+
+      ))}
+
+    </div>
+
+  ) : (
+
+    <table className="w-full border-separate border-spacing-y-3">
+
+      <thead>
+
+        <tr>
+
+          <th className="text-left text-gray-500 font-semibold px-4">
+            Item Name
+          </th>
+
+          <th className="text-left text-gray-500 font-semibold px-4">
+            Total Qty Sold
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        {topItems.map(
+          (item, index) => (
+
+            <tr
+              key={index}
+              className="bg-gray-50 hover:bg-gray-100 transition rounded-2xl"
+            >
+
+              <td className="p-4 rounded-l-2xl font-semibold text-gray-800">
+
+                {item.item}
+
+              </td>
+
+              <td className="p-4 rounded-r-2xl font-bold text-lg">
+
+                {item.qty}
+
+              </td>
+
+            </tr>
+
+          )
+        )}
+
+      </tbody>
+
+    </table>
+
+  )}
+
+</div>
 
     </main>
 
