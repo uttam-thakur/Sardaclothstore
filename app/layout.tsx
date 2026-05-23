@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -10,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   PasswordProvider,
 } from "./component/PasswordProvider";
+import LogoutButton from "./component/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Sarda Cloth Store",
@@ -21,7 +23,14 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) 
+
+
+{
+    const handleLogout = () => {
+    localStorage.removeItem("auth");
+    window.location.reload();
+  };
   return (
     <html
       lang="en"
@@ -30,6 +39,7 @@ export default function RootLayout({
       <body className="min-h-screen">
 
         <PasswordProvider>
+          <LogoutButton/>
           {children}
         </PasswordProvider>
 
@@ -37,7 +47,7 @@ export default function RootLayout({
           position="top-right"
           autoClose={2000}
         />
-
+   
       </body>
     </html>
   );

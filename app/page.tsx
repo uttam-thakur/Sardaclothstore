@@ -68,15 +68,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center p-6">
 
       <div className="w-full max-w-5xl">
-        <button className="mt-8 w-full bg-blue-600 hover:bg-red-700 text-white py-3 rounded-2xl font-semibold transition"
 
-  onClick={() => {
-    localStorage.removeItem("auth");
-    window.location.reload();
-  }}
->
-  Logout
-</button>
 
         {/* Top Section */}
         <div className="text-center mb-12">
