@@ -16,44 +16,46 @@ price: "",
 };
 
 const GOOGLE_SHEET_API =
-  "https://script.google.com/macros/s/AKfycbwkvmnoVjLwF4XUvMWNuHSKtBYXNWejW0UfrA22AbdvaUYtgM46SKbTE2Gkp6fnaBEo/exec";
+"https://script.google.com/macros/s/AKfycbwkvmnoVjLwF4XUvMWNuHSKtBYXNWejW0UfrA22AbdvaUYtgM46SKbTE2Gkp6fnaBEo/exec";
 export default function InvoicePage() {
-
+  
   // Customer Details
   const [customerName, setCustomerName] =
-    useState("");
-
+  useState("");
+  
   const [mobileNo, setMobileNo] =
-    useState("");
-
+  useState("");
+  
   const [gstNo, setGstNo] =
-    useState("");
-
+  useState("");
+  
   // Current Item
   const [currentItem, setCurrentItem] =
-    useState({
-      itemName: "",
-      qty: 0,
-      price: 0,
-    });
-
+  useState({
+    itemName: "",
+    qty: 0,
+    price: 0,
+  });
+  
   // Discount
   const [discount, setDiscount] =
-    useState(0);
-
+  useState(0);
+  
   // Items
   const [items, setItems] = useState<
-    BillItem[]
+  BillItem[]
   >([]);
-
+  
   // Edit Index
   const [editIndex, setEditIndex] =
-    useState<number | null>(null);
-
+  useState<number | null>(null);
+  
   // Invoice Number
   const [invoiceNo, setInvoiceNo] =
-    useState("");
-
+  useState("");
+  
+  const isPrintDisabled =
+    !customerName.trim() || items.length === 0;
   // Date & Time
   const today = new Date();
 
@@ -78,7 +80,7 @@ const handleNewBill = () => {
 
     const formattedNumber = String(
       nextNumber
-    ).padStart(6, "0");
+    )
 
 setInvoiceNo(
   `SAR/26-27/${formattedNumber}`
@@ -155,11 +157,12 @@ setInvoiceNo(
   );
 
   // GST
-  const gstAmount = subtotal * 0.05;
-
+  // const gstAmount = subtotal * 0.05;
+const gstAmount = subtotal - subtotal / 1.05;
   // Final Total
   const finalTotal =
-    subtotal + gstAmount - discount;
+    // subtotal + gstAmount - discount;
+    subtotal - discount;
 
   // Number To Words
   const numberToWords:any = (
@@ -1130,18 +1133,21 @@ border-bottom:0.8px solid #444;            padding:5px 0;
       </div>
 
       {/* Print Button */}
-      <div className="sticky bottom-4 mt-10">
-
-        <button
-          onClick={printInvoice}
-          className="w-full bg-gradient-to-r from-black to-gray-800 hover:shadow-2xl hover:scale-[1.01] transition-all text-white py-5 rounded-3xl text-xl font-bold tracking-wide"
-        >
-
-          Print Thermal Bill
-
-        </button>
-
-      </div>
+    {/* Print Button */}
+<div className="sticky bottom-4 mt-10">
+  <button
+    onClick={printInvoice}
+    disabled={isPrintDisabled}
+    className={`w-full py-5 rounded-3xl text-xl font-bold tracking-wide transition-all
+      ${
+        isPrintDisabled
+          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+          : "bg-gradient-to-r from-black to-gray-800 text-white hover:shadow-2xl hover:scale-[1.01]"
+      }`}
+  >
+    Print Thermal Bill
+  </button>
+</div>
 
     </div>
        {/* Right Side Bill */}
@@ -1156,20 +1162,33 @@ border-bottom:0.8px solid #444;            padding:5px 0;
     <div className="text-center">
 
       <h1 className="text-[22px] font-bold tracking-wide uppercase">
-        SARI CENTRE
+        SARDA CLOTH STORE
       </h1>
 
       <p className="text-[11px]">
-        Pandri Wholesale Market
+  Annapurna Apartment, Lithuria Rd
       </p>
 
       <p className="text-[11px]">
-        Raipur (C.G.)
+  Asansol, Neamatpur - 713359
       </p>
 
       <p className="text-[11px]">
         GST No: 22AAAAA0000A1Z5
       </p>
+
+   
+
+      <div className="flex justify-between text-[11px] gap-4">
+  
+  <div>
+    <p>Mob No: 7908767210</p>
+    <p className="ml-[45px]">8409877498</p>
+  </div>
+
+  <p>sardaclothstore@gmail.com</p>
+
+</div>
 
     </div>
 

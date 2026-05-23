@@ -478,14 +478,20 @@ const saveEditedInvoice =
         0
       );
 
-    const gstAmount =
-      subtotal * 0.05;
+    // const gstAmount =
+    //   subtotal * 0.05;
+    const gstAmount = subtotal - subtotal / 1.05;
 
-    const finalTotal =
+
+    // const finalTotal =
+    //   subtotal +
+    //   gstAmount -
+    //   editingInvoice.discount;
+
+
+      const finalTotal =
       subtotal +
-      gstAmount -
       editingInvoice.discount;
-
     const updatedInvoice = {
 
       ...editingInvoice,
@@ -1405,21 +1411,32 @@ const startEdit = (
   <div className="text-center">
 
     <h1 className="text-[22px] font-bold tracking-wide uppercase">
-      SARI CENTRE
+      SARDA CLOTH STORE
     </h1>
 
     <p className="text-[11px]">
-      Pandri Wholesale Market
+Annapurna Apartment, Lithuria Rd
     </p>
 
     <p className="text-[11px]">
-      Raipur (C.G.)
+Asansol, Neamatpur - 713359
     </p>
 
     <p className="text-[11px]">
       GST No: 22AAAAA0000A1Z5
     </p>
 
+
+<div className="flex justify-between text-[11px] gap-4">
+  
+  <div>
+    <p>Mob No: 7908767210</p>
+    <p className="ml-[45px]">8409877498</p>
+  </div>
+
+  <p>sardaclothstore@gmail.com</p>
+
+</div>
   </div>
 
   {/* Line */}
