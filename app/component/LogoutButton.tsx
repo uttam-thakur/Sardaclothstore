@@ -9,14 +9,26 @@ export default function LogoutButton() {
   };
 
   return (
-    <div className="fixed top-12 right-150 z-50">
-      <button
-        onClick={handleLogout}
-        className="flex items-center gap-2 bg-red-500 hover:bg-red-600 active:scale-95 transition-all duration-200 text-white px-5 py-2 rounded-xl shadow-lg font-medium"
-      >
-        <LogOut size={18} />
-        Logout
-      </button>
-    </div>
+  <div className="top-4 right-4 z-50">
+  <button
+    onClick={handleLogout}
+    className="
+      flex items-center gap-1.5
+      bg-white/10
+      backdrop-blur-md
+      border border-white/20
+      hover:border-gray-400
+      text-gray-700 hover:text-black
+      px-3 py-1.5
+      rounded-xl
+      shadow-sm hover:shadow-md
+      transition-all duration-200
+      text-sm font-medium
+    "
+  >
+    <LogOut size={15} />
+    Logout
+  </button>
+</div>
   );
 }
