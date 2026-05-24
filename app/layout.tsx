@@ -17,6 +17,23 @@ export const metadata: Metadata = {
   title: "Sarda Cloth Store",
   description:
     "Billing Software",
+
+     openGraph: {
+    title: "Sarda Cloth Store",
+    description: "Professional Billing Software for Sarda Cloth Store",
+    url: "https://sardaclothstore.netlify.app/",
+    siteName: "Sarda Cloth Store",
+    images: [
+      {
+        url: "/logo.jpg", // put image inside public folder
+        width: 1200,
+        height: 630,
+        alt: "Sarda Cloth Store",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
