@@ -65,13 +65,17 @@ export function PasswordProvider({
             className="w-full border border-gray-300 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-black"
           />
 
-          <button
-            onClick={handleLogin}
-            className="w-full mt-6 bg-black text-white py-3 rounded-2xl font-semibold hover:bg-gray-800 transition"
-          >
-            Login
-          </button>
-
+<button
+  onClick={handleLogin}
+  disabled={!password.trim()}
+  className={`w-full mt-6 py-3 rounded-2xl font-semibold transition ${
+    password.trim()
+      ? "bg-black text-white hover:bg-gray-800 cursor-pointer"
+      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+  }`}
+>
+  Login
+</button>
         </div>
 
       </div>

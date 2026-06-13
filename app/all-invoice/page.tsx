@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import { toast } from "react-toastify";
 import Link from "next/link";
 
 type InvoiceItem = {
@@ -15,7 +15,7 @@ type InvoiceItem = {
 type Invoice = {
   invoiceNo: string;
   customerName: string;
-  mobileNo: string;
+  mobileNo: any;
   gstNo: string;
   items: InvoiceItem[];
   subtotal: number;
@@ -465,6 +465,7 @@ const saveEditedInvoice =
   async () => {
 
   try {
+    toast.success("Invoice updated successfully!");
 
     const subtotal =
       editingInvoice.items.reduce(
@@ -489,9 +490,11 @@ const saveEditedInvoice =
     //   editingInvoice.discount;
 
 
+      // const finalTotal =
+      // subtotal +
+      // editingInvoice.discount;
       const finalTotal =
-      subtotal +
-      editingInvoice.discount;
+  subtotal - editingInvoice.discount;
     const updatedInvoice = {
 
       ...editingInvoice,
@@ -534,6 +537,7 @@ const saveEditedInvoice =
     setEditingInvoice(null);
 
   } catch (error) {
+    toast.error("Failed to update invoice!");
 
     console.log(error);
 
@@ -852,170 +856,180 @@ const startEdit = (
       Edit Invoice
     </h2>
 
-    <div className="space-y-4">
+    <div className="space-y-5">
 
-      <input
-        type="text"
-        value={editingInvoice.invoiceNo}
-        onChange={(e) =>
-          setEditingInvoice({
-            ...editingInvoice,
-            invoiceNo:
-              e.target.value,
-          })
-        }
-        className="w-full border p-3 rounded-xl"
-        placeholder="Invoice No"
-      />
+  {/* Invoice No */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Invoice No
+    </label>
+    <input
+      type="text"
+      value={editingInvoice.invoiceNo}
+      onChange={(e) =>
+        setEditingInvoice({
+          ...editingInvoice,
+          invoiceNo: e.target.value,
+        })
+      }
+      className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+      placeholder="Enter Invoice Number"
+    />
+  </div>
 
-      <input
-        type="text"
-        value={editingInvoice.customerName}
-        onChange={(e) =>
-          setEditingInvoice({
-            ...editingInvoice,
-            customerName:
-              e.target.value,
-          })
-        }
-        className="w-full border p-3 rounded-xl"
-        placeholder="Customer Name"
-      />
+  {/* Customer Name */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Customer Name
+    </label>
+    <input
+      type="text"
+      value={editingInvoice.customerName}
+      onChange={(e) =>
+        setEditingInvoice({
+          ...editingInvoice,
+          customerName: e.target.value,
+        })
+      }
+      className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+      placeholder="Enter Customer Name"
+    />
+  </div>
 
-      <input
-        type="text"
-        value={editingInvoice.mobileNo}
-        onChange={(e) =>
-          setEditingInvoice({
-            ...editingInvoice,
-            mobileNo:
-              e.target.value,
-          })
-        }
-        className="w-full border p-3 rounded-xl"
-      />
+  {/* Mobile Number */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Mobile Number
+    </label>
+    <input
+      type="text"
+      value={editingInvoice.mobileNo}
+      onChange={(e) =>
+        setEditingInvoice({
+          ...editingInvoice,
+          mobileNo: e.target.value,
+        })
+      }
+      className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+      placeholder="Enter Mobile Number"
+    />
+  </div>
 
-      <input
-        type="text"
-        value={editingInvoice.gstNo}
-        onChange={(e) =>
-          setEditingInvoice({
-            ...editingInvoice,
-            gstNo:
-              e.target.value,
-          })
-        }
-        className="w-full border p-3 rounded-xl"
-      />
+  {/* GST Number */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      GST Number
+    </label>
+    <input
+      type="text"
+      value={editingInvoice.gstNo}
+      onChange={(e) =>
+        setEditingInvoice({
+          ...editingInvoice,
+          gstNo: e.target.value,
+        })
+      }
+      className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+      placeholder="Enter GST Number"
+    />
+  </div>
 
-      {editingInvoice.items.map(
-        (
-          item:any,
-          index:number
-        ) => (
+  {/* Items */}
+  <div>
+    <label className="block text-sm font-semibold text-gray-800 mb-3">
+      Invoice Items
+    </label>
 
+    {editingInvoice.items.map(
+      (item: any, index: number) => (
         <div
           key={index}
-          className="grid grid-cols-3 gap-3"
+          className="grid md:grid-cols-3 gap-3 mb-4 p-4 border border-gray-200 rounded-xl bg-gray-50"
         >
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Item Name
+            </label>
+            <input
+              type="text"
+              value={item.itemName}
+              onChange={(e) => {
+                const updatedItems = [...editingInvoice.items];
+                updatedItems[index].itemName = e.target.value;
 
-          <input
-            type="text"
-            value={item.itemName}
-            onChange={(e) => {
+                setEditingInvoice({
+                  ...editingInvoice,
+                  items: updatedItems,
+                });
+              }}
+              className="w-full border border-gray-300 p-3 rounded-xl"
+            />
+          </div>
 
-              const updatedItems =
-                [
-                  ...editingInvoice.items,
-                ];
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Quantity
+            </label>
+            <input
+              type="number"
+              value={item.qty}
+              onChange={(e) => {
+                const updatedItems = [...editingInvoice.items];
+                updatedItems[index].qty = Number(e.target.value);
 
-              updatedItems[index]
-                .itemName =
-                e.target.value;
+                setEditingInvoice({
+                  ...editingInvoice,
+                  items: updatedItems,
+                });
+              }}
+              className="w-full border border-gray-300 p-3 rounded-xl"
+            />
+          </div>
 
-              setEditingInvoice({
-                ...editingInvoice,
-                items:
-                  updatedItems,
-              });
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">
+              Price (₹)
+            </label>
+            <input
+              type="number"
+              value={item.price}
+              onChange={(e) => {
+                const updatedItems = [...editingInvoice.items];
+                updatedItems[index].price = Number(e.target.value);
 
-            }}
-            className="border p-3 rounded-xl"
-          />
-
-          <input
-            type="number"
-            value={item.qty}
-            onChange={(e) => {
-
-              const updatedItems =
-                [
-                  ...editingInvoice.items,
-                ];
-
-              updatedItems[index]
-                .qty =
-                Number(
-                  e.target.value
-                );
-
-              setEditingInvoice({
-                ...editingInvoice,
-                items:
-                  updatedItems,
-              });
-
-            }}
-            className="border p-3 rounded-xl"
-          />
-
-          <input
-            type="number"
-            value={item.price}
-            onChange={(e) => {
-
-              const updatedItems =
-                [
-                  ...editingInvoice.items,
-                ];
-
-              updatedItems[index]
-                .price =
-                Number(
-                  e.target.value
-                );
-
-              setEditingInvoice({
-                ...editingInvoice,
-                items:
-                  updatedItems,
-              });
-
-            }}
-            className="border p-3 rounded-xl"
-          />
-
+                setEditingInvoice({
+                  ...editingInvoice,
+                  items: updatedItems,
+                });
+              }}
+              className="w-full border border-gray-300 p-3 rounded-xl"
+            />
+          </div>
         </div>
+      )
+    )}
+  </div>
 
-      ))}
+  {/* Discount */}
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Discount (₹)
+    </label>
+    <input
+      type="number"
+      value={editingInvoice.discount}
+      onChange={(e) =>
+        setEditingInvoice({
+          ...editingInvoice,
+          discount: Number(e.target.value),
+        })
+      }
+      className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+      placeholder="Enter Discount Amount"
+    />
+  </div>
 
-      <input
-        type="number"
-        value={editingInvoice.discount}
-        onChange={(e) =>
-          setEditingInvoice({
-            ...editingInvoice,
-            discount:
-              Number(
-                e.target.value
-              ),
-          })
-        }
-        className="w-full border p-3 rounded-xl"
-        placeholder="Discount"
-      />
-
-    </div>
+</div>
 
     <div className="grid grid-cols-2 gap-4 mt-6">
 
@@ -1046,83 +1060,7 @@ const startEdit = (
 </div>
 
 )}
-      {/* Header */}
-      {/* <div className="flex justify-between items-center mb-8">
-
-        <h1 className="text-3xl font-bold">
-          All Thermal Bills
-        </h1>
-
-        <Link href="/invoice">
-          <button className="bg-black text-white px-5 py-3 rounded-lg">
-            Create Invoice
-          </button>
-        </Link>
-
-      </div>
-
-      <div className="bg-white p-5 rounded-2xl shadow-lg mb-8">
-
-  <h2 className="text-xl font-bold mb-4">
-    Filter Bills
-  </h2>
-
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-    
-    <input
-      type="text"
-      placeholder="Search Bill No"
-      value={searchBillNo}
-      onChange={(e) =>
-        setSearchBillNo(
-          e.target.value
-        )
-      }
-      className="border px-4 py-3 rounded-xl"
-    />
-
-    
-    <input
-      type="text"
-      placeholder="Customer Name"
-      value={searchCustomer}
-      onChange={(e) =>
-        setSearchCustomer(
-          e.target.value
-        )
-      }
-      className="border px-4 py-3 rounded-xl"
-    />
-
-    
-    <input
-      type="text"
-      placeholder="dd-mm-yyyy"
-      value={searchDate}
-      onChange={(e) =>
-        setSearchDate(
-          e.target.value
-        )
-      }
-      className="border px-4 py-3 rounded-xl"
-    />
-
-        <input
-      type="month"
-      value={searchMonth}
-      onChange={(e) =>
-        setSearchMonth(
-          e.target.value
-        )
-      }
-      className="border px-4 py-3 rounded-xl"
-    />
-
-  </div>
-
-</div> */}
-
+      
 
 
 {/* Header */}
@@ -1146,6 +1084,12 @@ const startEdit = (
     {/* Right Buttons */}
     <div className="flex flex-wrap gap-3">
 
+<Link href="/">
+<button className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-800 px-6 py-3 rounded-2xl font-semibold shadow-sm transition-all duration-200">     
+Home 
+</button>
+
+</Link>
       <Link href="/invoice">
         <button className="bg-gradient-to-r from-black to-gray-800 hover:scale-105 transition-all duration-300 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg">
           + Create Invoice
@@ -1733,16 +1677,7 @@ Asansol, Neamatpur - 713359
   Edit
 </button>
 
-                {/* <button
-  onClick={() =>
-    deleteInvoice(
-      invoice.invoiceNo
-    )
-  }
-  className="bg-red-600 text-white py-3 rounded-xl font-semibold"
->
-  Delete
-</button> */}
+
 
               </div>
 

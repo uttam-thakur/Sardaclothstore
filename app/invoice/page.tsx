@@ -252,24 +252,7 @@ const printInvoice = async () => {
   const existingInvoices = JSON.parse(
     localStorage.getItem("invoices") || "[]"
   );
-// const saveToSheet = async () => {
-//   try {
-//     const res = await fetch(GOOGLE_SHEET_API, {
-//       method: "POST",
-//       mode:"no-cors",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(invoiceData),
-//     });
-
-//     const result = await res.text();
-//     console.log("Google Sheet Response:", result);
-//   } catch (error: unknown) {
-//     console.log("Google Sheet Save Error:", error);
-//   }
-// };
-
+  
 const saveToSheet = async () => {
 
   try {
@@ -573,235 +556,6 @@ border-bottom:0.8px solid #444;            padding:5px 0;
 };
 
   return (
-//     <main className="min-h-screen bg-gray-100 p-6">
-
-//       {/* Header */}
-//       <div className="flex justify-between items-center mb-8">
-
-//         <h1 className="text-3xl font-bold">
-//           Thermal Invoice
-//         </h1>
-
-//         <Link href="/all-invoice">
-//           <button className="bg-black text-white px-5 py-3 rounded-xl">
-//             All Bills
-//           </button>
-//         </Link>
-//         <button
-//   onClick={handleNewBill}
-//   className="bg-black text-white px-5 py-3 rounded-xl"
-// >
-//   New Bill
-// </button>
-
-//       </div>
-
-//       <div className="grid lg:grid-cols-2 gap-8">
-
-//         {/* Left Side */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg">
-
-//           {/* Customer */}
-//           <h2 className="text-2xl font-bold mb-6">
-//             Customer Details
-//           </h2>
-
-//           <div className="space-y-4">
-
-//             <input
-//               type="text"
-//               placeholder="Customer Name"
-//               value={customerName}
-//               onChange={(e) =>
-//                 setCustomerName(
-//                   e.target.value
-//                 )
-//               }
-//               className="w-full border px-4 py-3 rounded-xl"
-//             />
-
-//             <input
-//               type="text"
-//               placeholder="Mobile Number"
-//               value={mobileNo}
-//               onChange={(e) =>
-//                 setMobileNo(
-//                   e.target.value
-//                 )
-//               }
-//               className="w-full border px-4 py-3 rounded-xl"
-//             />
-
-//             <input
-//               type="text"
-//               placeholder="GST Number"
-//               value={gstNo}
-//               onChange={(e) =>
-//                 setGstNo(
-//                   e.target.value
-//                 )
-//               }
-//               className="w-full border px-4 py-3 rounded-xl"
-//             />
-
-//           </div>
-
-//           {/* Items */}
-//           <h2 className="text-2xl font-bold mt-10 mb-6">
-//             Add Items
-//           </h2>
-
-//           <div className="grid grid-cols-4 gap-3 mb-3 font-semibold">
-
-//             <div>Item</div>
-
-//             <div>Qty</div>
-
-//             <div>Price</div>
-
-//             <div></div>
-
-//           </div>
-
-//           <div className="grid grid-cols-4 gap-3">
-
-//             <input
-//               type="text"
-//               placeholder="Item"
-//               value={
-//                 currentItem.itemName
-//               }
-//               onChange={(e) =>
-//                 setCurrentItem({
-//                   ...currentItem,
-//                   itemName:
-//                     e.target.value,
-//                 })
-//               }
-//               className="border px-4 py-3 rounded-xl"
-//             />
-
-//           <input
-//   type="number"
-//   placeholder="Qty"
-//   value={currentItem.qty}
-  
-//   onChange={(e) =>
-//     setCurrentItem({
-//       ...currentItem,
-//       qty: Number(e.target.value),
-//     })
-//   }
-//   className="border px-4 py-3 rounded-xl"
-// />
-
-// <input
-//   type="number"
-//   placeholder="Price"
-//   value={currentItem.price}
-  
-//   onChange={(e) =>
-//     setCurrentItem({
-//       ...currentItem,
-//       price: Number(e.target.value),
-//     })
-//   }
-//   className="border px-4 py-3 rounded-xl"
-// />
-
-//             <button
-//               onClick={addItem}
-//               className="bg-green-600 text-white rounded-xl"
-//             >
-//               {editIndex !== null
-//                 ? "Update"
-//                 : "Add"}
-//             </button>
-
-//           </div>
-
-//           {/* Added Items */}
-//           {items.length > 0 && (
-
-//             <div className="mt-6 space-y-3">
-
-//               {items.map(
-//                 (item, index) => (
-
-//                   <div
-//                     key={index}
-//                     className="grid grid-cols-6 gap-3 bg-gray-100 p-3 rounded-xl items-center"
-//                   >
-
-//                     <div className="col-span-2 font-medium text-sm">
-//                       {item.itemName}
-//                     </div>
-
-//                     <div className="text-sm">
-//                       Qty: {item.qty}
-//                     </div>
-
-//                     <div className="text-sm">
-//                       ₹ {item.price}
-//                     </div>
-
-//                     <button
-//                       onClick={() =>
-//                         editItem(index)
-//                       }
-//                       className="bg-blue-500 text-white py-2 rounded-lg text-sm"
-//                     >
-//                       Edit
-//                     </button>
-
-//                     <button
-//                       onClick={() =>
-//                         removeItem(index)
-//                       }
-//                       className="bg-red-500 text-white py-2 rounded-lg text-sm"
-//                     >
-//                       Remove
-//                     </button>
-
-//                   </div>
-
-//                 )
-//               )}
-
-//             </div>
-
-//           )}
-
-//           {/* Discount */}
-//           <div className="mt-8">
-
-//             <input
-//               type="number"
-//               placeholder="Discount"
-//               value={discount}
-//               onChange={(e) =>
-//                 setDiscount(
-//                   Number(
-//                     e.target.value
-//                   )
-//                 )
-//               }
-//               className="w-full border px-4 py-3 rounded-xl"
-//             />
-
-//           </div>
-
-//           {/* Print */}
-//           <button
-//             onClick={printInvoice}
-//             className="w-full mt-8 bg-black text-white py-4 rounded-2xl text-lg font-bold"
-//           >
-//             Print Bill
-//           </button>
-
-       
-
-//         </div>
 
        <main className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 p-6">
 
@@ -819,8 +573,17 @@ border-bottom:0.8px solid #444;            padding:5px 0;
       </p>
 
     </div>
+    
+
 
     <div className="flex gap-3 flex-wrap">
+      <Link href="/">
+
+        <button className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-800 px-6 py-3 rounded-2xl font-semibold shadow-sm transition-all duration-200">     
+Home 
+        </button>
+
+      </Link>
 
       <Link href="/all-invoice">
 
@@ -894,7 +657,7 @@ border-bottom:0.8px solid #444;            padding:5px 0;
           />
 
           <input
-            type="text"
+            type="Number"
             placeholder="Mobile Number"
             value={mobileNo}
             onChange={(e) =>
