@@ -31,7 +31,7 @@ type InvoiceItem = {
 type Invoice = {
   invoiceNo: string;
   customerName: string;
-  mobileNo: string;
+  mobileNo: any;
   gstNo: string;
   items: InvoiceItem[];
   subtotal: number;
@@ -335,13 +335,20 @@ const [loading, setLoading] =
         <h1 className="text-4xl font-bold">
           Sales Dashboard
         </h1>
+    <div className="flex gap-3 flex-wrap">
 
+<Link href="/">
+<button className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-800 px-6 py-3 rounded-2xl font-semibold shadow-sm transition-all duration-200">     
+Home 
+</button>
+
+</Link>
         <Link href="/all-invoice">
           <button className="bg-black text-white px-5 py-3 rounded-xl">
             All Bills
           </button>
         </Link>
-
+</div>
       </div>
 
       {/* Stats */}
